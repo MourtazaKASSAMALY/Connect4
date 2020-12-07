@@ -56,3 +56,40 @@ class Game:
                 print(self.symbols[self.grid[i][j]], end=" ")
             print(i)
             self.display_columns_numbers()
+
+    def is_move_allowed(self, column):
+        """
+        Params:
+            col : int
+            Index of the column to check for availability
+        Return:
+            bool: bool
+            Indicates if the column is available for a player move
+        """
+
+        if column < 1 or column > self.nb_columns:  # make sure we are not off the gris
+            return False
+        else:  # make sure the first row of the column is empty
+            return self.grid[self.nb_rows][column] == self.EMPTY
+
+    def drop_token(self, column, player):
+        """
+        Params:
+            col : int
+            Index of the column to drop a token
+            player: Player
+            Player object that will own the move
+        Return:
+            bool: bool
+            Indicates if the column is available for a player move
+        """
+
+        if not self.is_move_allowed(column):
+            return False
+
+        # find the row in which the token will fall
+        row = 1
+        while self.grid[row][column] != self.EMPTY:
+            row = row + 1
+
+        self.grid[row][column] = player.color
