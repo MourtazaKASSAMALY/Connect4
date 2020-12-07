@@ -93,3 +93,4 @@ class Game:
             row = row + 1
 
         self.grid[row][column] = player.color
+        return True
