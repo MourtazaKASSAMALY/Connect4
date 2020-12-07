@@ -30,8 +30,8 @@ class Game:
 
         # Initialize players
 
-        Player1 = Player(color=self.RED, name=player1name)
-        Player2 = Player(color=self.YELLOW, name=player2name)
+        self.player1 = Player(color=self.RED, name=player1name)
+        self.player2 = Player(color=self.YELLOW, name=player2name)
     
     def empty_grid(self):
         for i in range(self.nb_rows + 2):
@@ -55,7 +55,7 @@ class Game:
             for j in range(1, self.nb_columns + 1):
                 print(self.symbols[self.grid[i][j]], end=" ")
             print(i)
-            self.display_columns_numbers()
+        self.display_columns_numbers()
 
     def is_move_allowed(self, column):
         """
