@@ -45,8 +45,8 @@ class Game:
         print("")  # skip a line
   
     def display_grid(self):
-        print("") # skip a line
-        print("  ", "Connect 4") # add two spaces to
+        print("")  # skip a line
+        print("  ", "Connect 4")  # add two spaces to
 
         self.display_columns_numbers()
 
