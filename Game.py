@@ -35,12 +35,12 @@ class Game:
     
     def empty_grid(self):
         for i in range(self.nb_rows + 2):
-            for j in range(self.nb_cols + 2):
+            for j in range(self.nb_columns + 2):
                 self.grid[i][j] = self.EMPTY
         
     def display_columns_numbers(self):
         print(" ", end=" ")  # empty space to format the screen
-        for j in range(1, self.nb_cols + 1):
+        for j in range(1, self.nb_columns + 1):
             print(j, end=" ")  # display the number of each column and avoid skipping a line
         print("")  # skip a line
   
