@@ -16,4 +16,6 @@ if __name__ == "__main__":
         column = int(userinput)
 
         connect4game.drop_token(column, connect4game.player1)
+        if connect4game.player1.winner:
+            print("WIN")
         connect4game.display_grid()

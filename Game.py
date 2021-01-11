@@ -93,4 +93,69 @@ class Game:
             row = row + 1
 
         self.grid[row][column] = player.color
+
+        if self.nb_pions_alignes(row, column) >= 4:
+            player.winner = True
+
         return True
+
+    def nb_pions_dir(self, inRow, inColumn, inDirX, inDirY):  # return int
+        """
+        ROLE: outputs the greatest number of tokens of the same color aligned in the
+        direction givn by (inDirX, inDirY) and including the token located at (inRow,inColumn)
+
+        HYPOTHESES : There is a token at (inRow, inColumn) and inDirX and inDirY are not both equal to 0.
+
+        Params:
+            inRow, inColumn : int # position of the tested token
+            inDirX, inDirY : int # direction (1,1), (1,0), (1,-1) ou (0,1)
+        """
+        # 1.initialize
+
+        color = self.grid[inRow][inColumn]
+        nbAlignedTokens = 1  # for the token considered in (inRow, inColumn)
+
+        # 2.Count the number of tokens in the direction (inDirX, inDirY)
+
+        lig = inRow + inDirY  # row and column to test (will be incremented)
+        col = inColumn + inDirX
+
+        while self.grid[lig][col] == color:
+            nbAlignedTokens += 1
+            lig = lig + inDirY
+            col = col + inDirX
+
+        # 3.Count the number of tokens in the opposite direction(-inDirX, -inDirY)
+        lig = inRow - inDirY
+        col = inRow - inDirX
+
+        while self.grid[lig][col] == color:  # finite loop because boundaries of grid are empty
+            nbAlignedTokens += 1
+            lig = lig - inDirY
+            col = col - inDirX
+
+        # 4.Ouputs the result
+
+        print("("+str(inDirX)+", "+str(inDirY)+"):", nbAlignedTokens) # display for test
+        return nbAlignedTokens
+
+    def nb_pions_alignes(self, inRow, inColumn):  # return int
+        """
+        ROLE: outputs the greatest number of aligned tokens aligned in any
+        directions starting from the position (inRow, inColumn) and including the token located at (inRow,inColumn)
+
+        Params:
+            inRow, inColumn : int
+        """
+
+        nbAlignedTokens = 1  # the token considered in (inRow, in Column)
+
+        if self.grid[inRow][inColumn] != self.EMPTY:
+
+            # Compute the greatest alignment
+            nbAlignedTokens = max(nbAlignedTokens, self.nb_pions_dir(inRow, inColumn, 1, 1))
+            nbAlignedTokens = max(nbAlignedTokens, self.nb_pions_dir(inRow, inColumn, 1, 0))
+            nbAlignedTokens = max(nbAlignedTokens, self.nb_pions_dir(inRow, inColumn, 1, -1))
+            nbAlignedTokens = max(nbAlignedTokens, self.nb_pions_dir(inRow, inColumn, 0, 1))
+
+        return nbAlignedTokens

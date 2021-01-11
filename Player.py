@@ -14,3 +14,4 @@ class Player:
         if name == "":
             self.name = "Computer"
         self.nb_wins = int(0)  # count the number of wins
+        self.winner = False
