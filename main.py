@@ -19,8 +19,11 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 
-
 # --------------------------------------------------------------------------
+
+
+is_animating = False
+
 
 def plot_grid():
     global ax
@@ -50,7 +53,11 @@ def plot_grid():
     fig.canvas.draw()
     fig.canvas.flush_events()
 
+
 def animate(color, column, height):
+    global is_animating
+    is_animating = True
+
     y = 6.5
     line,  = ax.plot(column-1/2., y, marker='o', color=color, markersize=30)
 
@@ -59,6 +66,10 @@ def animate(color, column, height):
         fig.canvas.draw()
         fig.canvas.flush_events()
         y -= .1
+
+    is_animating = False
+
+
 # --------------------------------------------------------------------------
 
 
@@ -67,11 +78,13 @@ def onclick(event):
     global connect4game
     global player_index
     global text_to_display
+    global is_animating
+
+    if is_animating: return
 
     if connect4game.finished or (connect4game.EMPTY not in np.array(connect4game.grid)[1:7, 1:8]): return
 
     ix, iy = event.xdata, event.ydata
-    print(ix, iy)
 
     # ------- 1st player -------
 
@@ -80,7 +93,7 @@ def onclick(event):
         row, success = connect4game.drop_token(column, connect4game.player1)
         if success: 
             animate('red', column, row)
-        else :
+        else:
             player_index = (player_index - 1) % 2
         
         if connect4game.player1.winner:
@@ -92,9 +105,9 @@ def onclick(event):
     elif player_index == 1:
         column = int(ix) + 1
         row, success = connect4game.drop_token(column, connect4game.player2)
-        if success: 
+        if success:
             animate('yellow', column, row)
-        else :
+        else:
             player_index = (player_index - 1) % 2
 
         if connect4game.player2.winner:
@@ -107,11 +120,14 @@ def onclick(event):
 
     # ------- Deals with playing against a computer -------
 
-    if player_index == 1 and connect4game.player2.name == "Computer" and not connect4game.finished:
-        column = 0  # drop_token of column = 0 will always output False
-        while not connect4game.drop_token(column, connect4game.player2):
+    if player_index == 1 and connect4game.player2.name == "Computer" and not connect4game.finished \
+            and (connect4game.EMPTY in np.array(connect4game.grid)[1:7, 1:8]):
+
+        success = False  # drop_token of column = 0 will always output False
+        while not success:
             column = np.random.randint(1, 8)
-        print("Computer chooses to play at column ", column)
+            row, success = connect4game.drop_token(column, connect4game.player2)
+        animate('yellow', column, row)
         player_index = (player_index + 1) % 2
 
         if connect4game.player2.winner:

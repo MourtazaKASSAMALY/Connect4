@@ -87,7 +87,7 @@ class Game:
         """
 
         if not self.is_move_allowed(column):
-            return False
+            return 0, False
 
         # find the row in which the token will fall
         row = 1
