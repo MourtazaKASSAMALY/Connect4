@@ -21,7 +21,8 @@ class Game:
         self.RED = 1
         self.YELLOW = 2
         self.symbols = (" ", "*", "o")
-    
+        self.finished = False
+
         # Initialize grid
 
         self.grid = []
@@ -46,7 +47,6 @@ class Game:
   
     def display_grid(self):
         print("")  # skip a line
-        print("  ", "Connect 4")  # add two spaces to
 
         self.display_columns_numbers()
 
@@ -56,6 +56,8 @@ class Game:
                 print(self.symbols[self.grid[i][j]], end=" ")
             print(i)
         self.display_columns_numbers()
+
+        return self.grid
 
     def is_move_allowed(self, column):
         """
@@ -93,7 +95,6 @@ class Game:
             row = row + 1
 
         self.grid[row][column] = player.color
-
         if self.nb_pions_alignes(row, column) >= 4:
             player.winner = True
 
@@ -111,12 +112,10 @@ class Game:
             inDirX, inDirY : int # direction (1,1), (1,0), (1,-1) ou (0,1)
         """
         # 1.initialize
-
         color = self.grid[inRow][inColumn]
         nbAlignedTokens = 1  # for the token considered in (inRow, inColumn)
 
         # 2.Count the number of tokens in the direction (inDirX, inDirY)
-
         lig = inRow + inDirY  # row and column to test (will be incremented)
         col = inColumn + inDirX
 
@@ -127,7 +126,7 @@ class Game:
 
         # 3.Count the number of tokens in the opposite direction(-inDirX, -inDirY)
         lig = inRow - inDirY
-        col = inRow - inDirX
+        col = inColumn - inDirX
 
         while self.grid[lig][col] == color:  # finite loop because boundaries of grid are empty
             nbAlignedTokens += 1
@@ -135,8 +134,6 @@ class Game:
             col = col - inDirX
 
         # 4.Ouputs the result
-
-        print("("+str(inDirX)+", "+str(inDirY)+"):", nbAlignedTokens) # display for test
         return nbAlignedTokens
 
     def nb_pions_alignes(self, inRow, inColumn):  # return int

@@ -11,7 +11,7 @@ class Player:
         self.color = int(color)  # yellow or red
         self.name = str(name)
         self.computer = bool(name == "")  # if no name, then it is the computer
-        if name == "":
-            self.name = "Computer"
-        self.nb_wins = int(0)  # count the number of wins
+
+        if name == "": self.name = "Computer"
+
         self.winner = False
