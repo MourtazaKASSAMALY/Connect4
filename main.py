@@ -19,16 +19,17 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 
+
 # --------------------------------------------------------------------------
 
 def plot_grid():
     global ax
+    global fig
     global connect4game
     global player_index
     global text_to_display
 
     grid = connect4game.grid
-
     ax.clear()
 
     ax.grid(color='k', linestyle='-', linewidth=2)
@@ -39,14 +40,25 @@ def plot_grid():
         for j in range(len(grid[i])):
             if grid[i][j] == connect4game.RED:
                 ax.plot(j-1/2., i-1/2., marker='o', color='red', markersize=30)
+
             if grid[i][j] == connect4game.YELLOW:
                 ax.plot(j-1/2., i-1/2., marker='o', color='yellow', markersize=30)
 
     if connect4game.finished:
         ax.text(1, 2, text_to_display, size=20, rotation=-25,
                 bbox=dict(boxstyle="square", ec=(1., 0.5, 0.5), fc=(1., 0.8, 0.8)))
+    fig.canvas.draw()
+    fig.canvas.flush_events()
 
+def animate(color, column, height):
+    y = 6.5
+    line,  = ax.plot(column-1/2., y, marker='o', color=color, markersize=30)
 
+    while y > height-1/2.:
+        line.set_ydata(y)
+        fig.canvas.draw()
+        fig.canvas.flush_events()
+        y -= .1
 # --------------------------------------------------------------------------
 
 
@@ -59,13 +71,18 @@ def onclick(event):
     if connect4game.finished or (connect4game.EMPTY not in np.array(connect4game.grid)[1:7, 1:8]): return
 
     ix, iy = event.xdata, event.ydata
+    print(ix, iy)
 
     # ------- 1st player -------
 
     if player_index == 0:
         column = int(ix) + 1
-        if not connect4game.drop_token(column, connect4game.player1): player_index = (player_index - 1) % 2
-
+        row, success = connect4game.drop_token(column, connect4game.player1)
+        if success: 
+            animate('red', column, row)
+        else :
+            player_index = (player_index - 1) % 2
+        
         if connect4game.player1.winner:
             connect4game.finished = True
             text_to_display = "      " + connect4game.player1.name + " WINS !      "
@@ -74,7 +91,11 @@ def onclick(event):
 
     elif player_index == 1:
         column = int(ix) + 1
-        if not connect4game.drop_token(column, connect4game.player2): player_index = (player_index - 1) % 2
+        row, success = connect4game.drop_token(column, connect4game.player2)
+        if success: 
+            animate('yellow', column, row)
+        else :
+            player_index = (player_index - 1) % 2
 
         if connect4game.player2.winner:
             connect4game.finished = True

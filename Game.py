@@ -98,7 +98,7 @@ class Game:
         if self.nb_pions_alignes(row, column) >= 4:
             player.winner = True
 
-        return True
+        return row, True
 
     def nb_pions_dir(self, inRow, inColumn, inDirX, inDirY):  # return int
         """
