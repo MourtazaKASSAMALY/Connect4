@@ -1,4 +1,5 @@
 from Game import Game
+import numpy as np
 
 
 if __name__ == "__main__":
@@ -17,11 +18,11 @@ if __name__ == "__main__":
             print("   ", connect4game.player1.name, end="")  # add two spaces to
             connect4game.display_grid()
 
-            userinput = input("Choose a column to play: ").lower()
-            if userinput == "quit" or userinput == "exit" or userinput == "break" or userinput == "stop": break
-            column = int(userinput)
-
-            connect4game.drop_token(column, connect4game.player1)
+            column = 0  # drop_token of column = 0 will always return False
+            while not connect4game.drop_token(column, connect4game.player1):
+                userinput = input("Choose a column to play: ").lower()
+                if userinput == "quit" or userinput == "exit" or userinput == "break" or userinput == "stop": break
+                column = int(userinput)
 
             if connect4game.player1.winner:
                 connect4game.display_grid()
@@ -34,11 +35,16 @@ if __name__ == "__main__":
             print("   ", connect4game.player2.name, end="")  # add two spaces to
             connect4game.display_grid()
 
-            userinput = input("Choose a column to play: ").lower()
-            if userinput == "quit" or userinput == "exit" or userinput == "break" or userinput == "stop": break
-            column = int(userinput)
+            column = 0  # drop_token of column = 0 will always return False
+            while not connect4game.drop_token(column, connect4game.player2):
 
-            connect4game.drop_token(column, connect4game.player2)
+                if connect4game.player2.name != "Computer":
+                    userinput = input("Choose a column to play: ").lower()
+                    if userinput == "quit" or userinput == "exit" or userinput == "break" or userinput == "stop": break
+                    column = int(userinput)
+                else:
+                    column = np.random.randint(1, 8)
+                    print("Computer chooses to play at column ", column)
 
             if connect4game.player2.winner:
                 connect4game.display_grid()
