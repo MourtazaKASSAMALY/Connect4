@@ -10,6 +10,4 @@ Numpy
 
 Matplotlib
 
-Install via your IDE or by running in command line (Linux): sudo pip3 install numpy then by running sudo pip3 install matplotlib
-
-Note that pip should be installed first by: sudo apt-get install pip
+(Install via your IDE or by running in command line (Linux): sudo pip3 install numpy then by running sudo pip3 install matplotlib. Note that pip should be installed first by: sudo apt-get install pip)
