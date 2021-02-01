@@ -6,9 +6,9 @@ To launch the game, you have to clone/download the repository then run the "main
 
 # Needed libraries
 
-import numpy as np
+Numpy
 
-import matplotlib.pyplot as plt
+Matplotlib
 
 Install via your IDE or by running in command line (Linux): sudo pip3 install numpy then by running sudo pip3 install matplotlib
 
